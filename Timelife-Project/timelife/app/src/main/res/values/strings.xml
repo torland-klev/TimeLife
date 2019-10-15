@@ -8,4 +8,6 @@
     <string name="start">Start</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+    <string name="reset">Reset</string>
+    <string name="delete">Delete</string>
 </resources>

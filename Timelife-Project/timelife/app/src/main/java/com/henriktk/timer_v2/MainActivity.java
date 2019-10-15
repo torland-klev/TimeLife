@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -92,9 +93,27 @@ public class MainActivity extends AppCompatActivity implements TimerViewAdapter.
 
     @Override
     public void onItemClick(View view, int position) {
-        Toast.makeText(this, "You clicked " + mAdapter.getItem(position).getName() + " on row number " + position, Toast.LENGTH_SHORT).show();
+        Button delete = view.findViewById(R.id.buttonDelete);
+        Button start = view.findViewById(R.id.buttonStart);
+        if (delete.getVisibility() == View.VISIBLE){
+            delete.setVisibility(View.GONE);
+            start.setVisibility(View.GONE);
+        } else {
+            delete.setVisibility(View.VISIBLE);
+            start.setVisibility(View.VISIBLE);
+        }
+
     }
 
+
+
+    public void delete(View view) {
+        Log.d("VIEW ID", Integer.toString((int) view.getTag()));
+    }
+
+    public void start(View view) {
+        Log.d("VIEW ID", Integer.toString((int) view.getTag()));
+    }
 
     //*************************************************************//
     //************************ Logging ****************************//
@@ -107,4 +126,5 @@ public class MainActivity extends AppCompatActivity implements TimerViewAdapter.
             Log.d("Timers:\n", li.next().getName());
         }
     }
+
 }

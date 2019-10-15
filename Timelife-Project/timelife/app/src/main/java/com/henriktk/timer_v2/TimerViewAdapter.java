@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,7 +33,12 @@ public class TimerViewAdapter extends RecyclerView.Adapter<TimerViewAdapter.View
     public void onBindViewHolder(ViewHolder holder, int position) {
         Timer t = timers.get(position);
         String name = t.getName();
-        holder.textView.setText(name);
+        Long ltime = t.getTime();
+        String time = Long.toString(ltime);
+        holder.name.setText(name);
+        holder.time.setText(time);
+        holder.delete.setTag(t.getId());
+        holder.start.setTag(t.getId());
     }
 
     @Override
@@ -42,11 +48,15 @@ public class TimerViewAdapter extends RecyclerView.Adapter<TimerViewAdapter.View
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView textView;
+        TextView name, time;
+        Button delete, start;
 
         ViewHolder(View itemView) {
             super(itemView);
-            textView = itemView.findViewById(R.id.timerTextView);
+            name = itemView.findViewById(R.id.timerTextName);
+            time = itemView.findViewById(R.id.timerTextTime);
+            start = itemView.findViewById(R.id.buttonStart);
+            delete = itemView.findViewById(R.id.buttonDelete);
             itemView.setOnClickListener(this);
         }
 

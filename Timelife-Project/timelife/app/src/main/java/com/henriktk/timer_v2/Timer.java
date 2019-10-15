@@ -37,25 +37,5 @@ public class Timer {
         return this.time;
     }
 
-    public static final DiffUtil.ItemCallback<Timer> DIFF_CALLBACK = new DiffUtil.ItemCallback<Timer>() {
-        @Override
-        public boolean areItemsTheSame(@NonNull Timer oldItem, @NonNull Timer newItem) {
-            if (oldItem.getId() == newItem.getId()){
-                return true;
-            }
-            return false;
-        }
-
-        @Override
-        public boolean areContentsTheSame(@NonNull Timer oldItem, @NonNull Timer newItem) {
-            if (oldItem.getName().equals(newItem.getName())){
-                if (oldItem.getTime() == newItem.getTime()){
-                    return true;
-                }
-            }
-            return false;
-        }
-    };
-
 
 }

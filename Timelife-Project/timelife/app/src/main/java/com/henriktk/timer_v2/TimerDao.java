@@ -15,6 +15,12 @@ public interface TimerDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(Timer timer);
 
+    @Query("UPDATE timer_table SET time = :time WHERE id = :id")
+    void update(int id, long time);
+
+    @Query("SELECT (id) FROM timer_table WHERE name = :name")
+    int[] getIdsFromName(String name);
+
     @Query("DELETE FROM timer_table")
     void deleteAll();
 
