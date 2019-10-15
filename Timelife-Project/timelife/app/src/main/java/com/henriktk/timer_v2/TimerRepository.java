@@ -4,7 +4,7 @@ import android.content.Context;
 import java.util.List;
 
 public class TimerRepository {
-    private TimerDao timerDao;
+    protected final TimerDao timerDao;
 
     protected TimerRepository(Context context){
         TimerDatabase db = TimerDatabase.getDatabase(context);
