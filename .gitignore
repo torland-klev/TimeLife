@@ -1,5 +1,4 @@
-*/.idea/assetWizardSettings.xml
-*/.idea/cache
-*/.idea/gradle.xml
-*/.idea/modules.xml
-*/.idea/workspace.xml
+assetWizardSettings.xml
+gradle.xml
+modules.xml
+workspace.xml
