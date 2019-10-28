@@ -29,6 +29,10 @@ Follow the [official guide](https://developer.android.com/studio/publish/prepari
 * [Android Studio](https://developer.android.com/studio) - IDE
 * [Gradle](https://developer.android.com/studio/releases/gradle-plugin) - Dependency Management
 
+## Contributing
+
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
+
 ## Authors
 
 * **Henrik Torland Klev** - *Initial work* - [torland-klev](https://github.com/torland-klev)
