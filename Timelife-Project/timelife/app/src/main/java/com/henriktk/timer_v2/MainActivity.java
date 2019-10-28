@@ -7,18 +7,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.TextView;
 
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 
 
-public class MainActivity extends AppCompatActivity implements TimerViewAdapter.ItemClickListener{
+public class MainActivity extends AppCompatActivity {
 
     private TimerRepository repo;
     private TimerViewAdapter mAdapter;
@@ -41,7 +44,6 @@ public class MainActivity extends AppCompatActivity implements TimerViewAdapter.
         recyclerView.setLayoutManager(layoutManager);
 
         mAdapter = new TimerViewAdapter(this, timers);
-        mAdapter.setClickListener(this);
         recyclerView.setAdapter(mAdapter);
 
     }
@@ -86,33 +88,72 @@ public class MainActivity extends AppCompatActivity implements TimerViewAdapter.
     private void newTimer(String name){
         Log.d("New Timer", "Adding new timer");
         Timer t = new Timer(name, 0);
-        repo.insert(t);
+        t.setId((int) repo.insert(t));
         timers.add(t);
         mAdapter.notifyItemInserted(mAdapter.getItemCount());
     }
 
-    @Override
-    public void onItemClick(View view, int position) {
-        Button delete = view.findViewById(R.id.buttonDelete);
-        Button start = view.findViewById(R.id.buttonStart);
-        if (delete.getVisibility() == View.VISIBLE){
-            delete.setVisibility(View.GONE);
-            start.setVisibility(View.GONE);
-        } else {
-            delete.setVisibility(View.VISIBLE);
-            start.setVisibility(View.VISIBLE);
-        }
-
-    }
 
 
 
     public void delete(View view) {
-        Log.d("VIEW ID", Integer.toString((int) view.getTag()));
+        Timer t = (Timer) view.getTag();
+        int id = repo.getIdsFromName(t.getName())[0];
+        Log.d("DELETE VIEW ID", Integer.toString(id));
+        repo.delete(id);
+        mAdapter.notifyItemRemoved(timers.indexOf(t));
+        timers.remove(timers.indexOf(t));
     }
 
-    public void start(View view) {
-        Log.d("VIEW ID", Integer.toString((int) view.getTag()));
+    private final Handler timerHandler = new Handler();
+    private final HashMap<View, Runnable> runners = new HashMap<>();
+    private final HashMap<View, Boolean> bits = new HashMap<>();
+
+    public void start(final View view) {
+        final Timer t = (Timer) ((Object[]) view.getTag())[0];
+        final TextView timerView = (TextView) ((Object[]) view.getTag())[1];
+        final int id = t.getId();
+
+        Log.d("START VIEW ID", Integer.toString(id));
+        if (!bits.containsKey(view)){
+            bits.put(view, false);
+        }
+        if (!runners.containsKey(view)){
+            Log.d("Not got!", Integer.toString(id));
+            final Runnable runner = new Runnable() {
+                @Override
+                public void run() {
+                    if (bits.get(view)) {
+                        long newTime = t.addTime(1);
+                        repo.update(id, newTime);
+                        timerView.setText(Long.toString(newTime));
+                        timerHandler.postDelayed(this, 1000);
+                        Log.d("Running!", Integer.toString(id));
+                    }
+                }
+            };
+            runners.put(view, runner);
+        }
+        if (!bits.get(view)){
+            bits.put(view, true);
+            timerHandler.postDelayed(runners.get(view), 500);
+        } else {
+            timerHandler.removeCallbacks(runners.get(view));
+            bits.put(view, false);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Iterator hmIter = runners.entrySet().iterator();
+        while (hmIter.hasNext()){
+            timerHandler.removeCallbacks((Runnable)((Map.Entry) hmIter.next()).getValue());
+        }
+        hmIter = bits.keySet().iterator();
+        while (hmIter.hasNext()){
+            bits.put((View) hmIter.next(), false);
+        }
     }
 
     //*************************************************************//

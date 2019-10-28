@@ -16,9 +16,13 @@ public class TimerRepository {
     }
 
 
-    public void insert (Timer timer) {
-        timerDao.insert(timer);
+    public long insert (Timer timer) {
+        return timerDao.insert(timer);
     }
 
+    public void delete (int id) { timerDao.remove(id); }
 
+    public void update(int id, long time){ timerDao.update(id, time); }
+
+    public int[] getIdsFromName(String name){ return timerDao.getIdsFromName(name); }
 }

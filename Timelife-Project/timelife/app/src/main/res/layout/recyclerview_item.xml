@@ -47,8 +47,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/start"
-                    android:background="@drawable/layout_bg"
-                    android:visibility="gone"/>
+                    android:background="@drawable/layout_bg"/>
                 <View
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -60,8 +59,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/delete"
-                    android:background="@drawable/layout_bg"
-                    android:visibility="gone" />
+                    android:background="@drawable/layout_bg" />
             </LinearLayout>
     </LinearLayout>
 </LinearLayout>

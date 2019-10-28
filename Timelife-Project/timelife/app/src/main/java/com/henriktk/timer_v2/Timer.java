@@ -1,7 +1,6 @@
 package com.henriktk.timer_v2;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.DiffUtil;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -36,6 +35,10 @@ public class Timer {
     public long getTime(){
         return this.time;
     }
+
+    public void setTime(long time) { this.time = time; }
+
+    public long addTime(long time) { this.time += time; return this.time; }
 
 
 }

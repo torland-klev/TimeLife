@@ -13,7 +13,7 @@ public interface TimerDao {
     List<Timer> getAll();
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insert(Timer timer);
+    long insert(Timer timer);
 
     @Query("UPDATE timer_table SET time = :time WHERE id = :id")
     void update(int id, long time);
@@ -23,5 +23,8 @@ public interface TimerDao {
 
     @Query("DELETE FROM timer_table")
     void deleteAll();
+
+    @Query("DELETE FROM timer_table WHERE id = :id")
+    void remove(int id);
 
 }

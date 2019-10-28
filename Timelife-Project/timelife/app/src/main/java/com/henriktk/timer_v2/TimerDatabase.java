@@ -7,7 +7,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 
-@Database(entities = {Timer.class}, version = 4)
+@Database(entities = {Timer.class}, version = 10)
 public abstract class TimerDatabase extends RoomDatabase{
     public abstract TimerDao timerDao();
 

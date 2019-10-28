@@ -1,6 +1,7 @@
 package com.henriktk.timer_v2;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,6 @@ public class TimerViewAdapter extends RecyclerView.Adapter<TimerViewAdapter.View
 
     private List<Timer> timers;
     private LayoutInflater mInflater;
-    private ItemClickListener mClickListener;
 
     public TimerViewAdapter(Context context, List<Timer> timers){
         this.timers = timers;
@@ -32,19 +32,22 @@ public class TimerViewAdapter extends RecyclerView.Adapter<TimerViewAdapter.View
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Timer t = timers.get(position);
+        Object[] tags = {t, holder.time};
         String name = t.getName();
         Long ltime = t.getTime();
         String time = Long.toString(ltime);
         holder.name.setText(name);
         holder.time.setText(time);
-        holder.delete.setTag(t.getId());
-        holder.start.setTag(t.getId());
+        holder.delete.setTag(t);
+        holder.start.setTag(tags);
     }
+
 
     @Override
     public int getItemCount() {
         return timers.size();
     }
+
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -57,29 +60,23 @@ public class TimerViewAdapter extends RecyclerView.Adapter<TimerViewAdapter.View
             time = itemView.findViewById(R.id.timerTextTime);
             start = itemView.findViewById(R.id.buttonStart);
             delete = itemView.findViewById(R.id.buttonDelete);
+            delete.setVisibility(View.GONE);
+            start.setVisibility(View.GONE);
             itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-            if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
+            if (delete.getVisibility() == View.VISIBLE){
+                delete.setVisibility(View.GONE);
+                start.setVisibility(View.GONE);
+            } else if (delete.getVisibility() == View.GONE){
+                delete.setVisibility(View.VISIBLE);
+                start.setVisibility(View.VISIBLE);
+            }
         }
 
-    }
 
 
-    // convenience method for getting data at click position
-    Timer getItem(int id) {
-        return timers.get(id);
-    }
-
-    // allows clicks events to be caught
-    void setClickListener(ItemClickListener itemClickListener) {
-        this.mClickListener = itemClickListener;
-    }
-
-    // parent activity will implement this method to respond to click events
-    public interface ItemClickListener {
-        void onItemClick(View view, int position);
     }
 }
